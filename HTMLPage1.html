@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Climate Change Flood Quiz</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Game show background animation (Cyan, Turquoise, and Blue Gradient) */
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #24DBED, #24EBC5, #008ADC);
+      background-size: 400% 400%;
+      animation: gradientAnimation 20s ease infinite;
+      z-index: -1;
+    }
+
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      text-align: center;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-top: 20px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    }
+
+    .button {
+      padding: 15px 30px;
+      background-color: #ffcc00;
+      border: none;
+      border-radius: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .button:hover {
+      transform: scale(1.05);
+    }
+
+    .option {
+      background: #f1f1f1;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin: 8px 0;
+      width: 100%;
+      text-align: left;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    .option:hover {
+      background: #e0e0e0;
+      transform: scale(1.01);
+    }
+
+    .option.correct {
+      background-color: #c8e6c9;
+    }
+
+    .option.wrong {
+      background-color: #ffcdd2;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #444;
+      opacity: 0;
+      animation: fadeInResult 0.4s forwards;
+    }
+
+    @keyframes fadeInResult {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Hide quiz page initially */
+    #quiz-screen {
+      display: none;
+    }
+
+    /* Hide the start screen when starting */
+    #start-screen.hidden {
+      display: none;
+    }
+
+    /* Score screen */
+    #score-screen {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Game Show Background -->
+  <div class="background"></div>
+
+  <!-- Start Screen -->
+  <div class="container" id="start-screen">
+    <h1>🌍 Climate Change Flood Quiz 🌊</h1>
+    <p>Test your knowledge about climate change and flood risks.</p>
+    <button class="button" id="start-btn">Start Quiz</button>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="container" id="quiz-screen">
+    <h2 id="question">Question text</h2>
+    <div id="options"></div>
+    <button class="button" id="next-btn" onclick="nextQuestion()">Next</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <!-- Score Screen -->
+  <div class="container" id="score-screen">
+    <h2>Quiz Completed!</h2>
+    <p>Your final score is: <span id="final-score"></span> / 20</p>
+    <button class="button" onclick="restartQuiz()">Play Again</button>
+  </div>
+
+  <!-- Audio elements for correct and incorrect answers -->
+  <audio id="correct-sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+  <audio id="incorrect-sound" src="https://www.soundjay.com/button/beep-09.wav" preload="auto"></audio>
+
+  <script>
+    const quizData = [
+      { question: "What is one main cause of floods?", options: ["Drought", "Heavy rainfall", "Wild fires", "Tornadoes"], answer: "Heavy rainfall" },
+      { question: "How does floods happen?", options: ["Ground water flooding", "Storm surges", "Rapid snow melt", "Heavy rainfall"], answer: "More rainfall" },
+      { question: "Which gas contributes most to climate change?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], answer: "Carbon Dioxide" },
+      { question: "Which area is most at risk of flooding?", options: ["Mountain tops", "Coastal cities", "Deserts", "Forests"], answer: "Coastal cities" },
+      { question: "What is a common result of urban flooding?", options: ["More trees", "Better roads", "Damaged infrastructure", "Fewer houses"], answer: "Damaged infrastructure" },
+      { question: "Which activity helps reduce flood risk?", options: ["Cutting trees", "Building on wetlands", "Planting vegetation", "Burning fossil fuels"], answer: "Planting vegetation" },
+      { question: "Which organization studies global climate change?", options: ["UNICEF", "NASA", "WWF", "WHO"], answer: "NASA" },
+      { question: "How does climate change affect rainfall?", options: ["No effect", "Decreases globally", "Makes it more extreme", "Only rains at night"], answer: "Makes it more extreme" },
+      { question: "Melting glaciers cause:", options: ["More farmland", "Lower sea levels", "Flooding", "Snowstorms"], answer: "Flooding" },
+      { question: "Flood defenses include:", options: ["Dams", "Cars", "Fossil fuels", "Airplanes"], answer: "Dams" },
+      { question: "Why are wetlands important?", options: ["They look nice", "They store carbon", "They dry out fast", "They attract tourists"], answer: "They store carbon" },
+      { question: "What is a floodplain?", options: ["A forest", "A high hill", "Low land near rivers", "An island"], answer: "Low land near rivers" },
+      { question: "More heat in the atmosphere causes:", options: ["Stable weather", "Fewer clouds", "More evaporation", "Less wind"], answer: "More evaporation" },
+      { question: "Which season is flooding most common in?", options: ["Winter", "Spring", "Summer", "Rainy season"], answer: "Rainy season" },
+      { question: "What is the best way to prepare for floods?", options: ["Ignore warnings", "Build a treehouse", "Create an emergency kit", "Cut power lines"], answer: "Create an emergency kit" },
+      { question: "Which country is highly vulnerable to sea level rise?", options: ["Switzerland", "Nepal", "Maldives", "Mongolia"], answer: "Maldives" },
+      { question: "What is flash flooding?", options: ["A slow flood", "A fast flood from heavy rain", "Ocean waves", "Melting snow"], answer: "A fast flood from heavy rain" },
+      { question: "What is the term for gases trapping heat?", options: ["Ozone layer", "Greenhouse effect", "Weathering", "Photosynthesis"], answer: "Greenhouse effect" },
+      { question: "Which type of energy reduces climate change?", options: ["Coal", "Wind", "Gasoline", "Diesel"], answer: "Wind" },
+      { question: "Floods can contaminate:", options: ["Roads", "Air", "Drinking water", "WiFi"], answer: "Drinking water" }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    // Start Quiz button functionality
+    document.getElementById('start-btn').addEventListener('click', startQuiz);
+
+    function startQuiz() {
+      // Hide the start screen and show the quiz screen
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').style.display = 'block';
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      document.getElementById('question').textContent = `Q${currentQuestion + 1}: ${q.question}`;
+      const optionsDiv = document.getElementById('options');
+      optionsDiv.innerHTML = '';
+
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(btn, option);
+        optionsDiv.appendChild(btn);
+      });
+
+      // Hide Next button until question is answered
+      document.getElementById('next-btn').style.display = 'none';
+      document.getElementById('result').textContent = '';
+    }
+
+    function checkAnswer(button, selected) {
+      const correct = quizData[currentQuestion].answer;
+      const buttons = document.querySelectorAll('.option');
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === correct) {
+          btn.classList.add('correct');
+        } else if (btn.textContent === selected) {
+          btn.classList.add('wrong');
+        }
+      });
+
+      // Play correct or incorrect sound
+      if (selected === correct) {
+        document.getElementById('correct-sound').play();
+        score++;
+        document.getElementById('result').textContent = "Correct!";
+      } else {
+        document.getElementById('incorrect-sound').play();
+        document.getElementById('result').textContent = `Wrong! The correct answer is: ${correct}`;
+      }
+
+      // Show Next button
+      document.getElementById('next-btn').style.display = 'block';
+    }
+
+    // Move to next question
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        endQuiz();
+      }
+    }
+
+    // End quiz and show score
+    function endQuiz() {
+      document.getElementById('quiz-screen').style.display = 'none';
+      document.getElementById('score-screen').style.display = 'block';
+      document.getElementById('final-score').textContent = score;
+    }
+
+    // Restart the quiz
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById('score-screen').style.display = 'none';
+      document.getElementById('start-screen').classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
