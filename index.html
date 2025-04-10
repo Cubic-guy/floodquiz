@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+=<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -18,28 +18,25 @@
       position: relative;
     }
 
-    /* Game show background animation (Cyan, Turquoise, and Blue Gradient) */
+    /* Static gradient background */
     .background {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #24DBED, #24EBC5, #008ADC);
-      background-size: 400% 400%;
-      animation: gradientAnimation 20s ease infinite;
+      background: linear-gradient(to bottom, #003366, #006699, #3399cc);
       z-index: -1;
-    }
-
-    @keyframes gradientAnimation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
     }
 
     .container {
       text-align: center;
       z-index: 1;
+      max-width: 600px;
+      margin: 20px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
     }
 
     h1 {
@@ -50,7 +47,7 @@
 
     .button {
       padding: 15px 30px;
-      background-color: #ffcc00;
+      background-color: #f1f1f1;
       border: none;
       border-radius: 6px;
       font-size: 18px;
@@ -92,7 +89,7 @@
       font-weight: bold;
       margin-top: 20px;
       font-size: 18px;
-      color: #444;
+      color: #000000;
       opacity: 0;
       animation: fadeInResult 0.4s forwards;
     }
@@ -122,7 +119,7 @@
 </head>
 <body>
 
-  <!-- Game Show Background -->
+  <!-- Static Background -->
   <div class="background"></div>
 
   <!-- Start Screen -->
@@ -153,26 +150,25 @@
 
   <script>
     const quizData = [
-      { question: "What is one main cause of floods?", options: ["Drought", "Heavy rainfall", "Wild fires", "Tornadoes"], answer: "Heavy rainfall" },
-      { question: "How does floods happen?", options: ["Ground water flooding", "Storm surges", "Rapid snow melt", "Heavy rainfall"], answer: "More rainfall" },
-      { question: "Which gas contributes most to climate change?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], answer: "Carbon Dioxide" },
-      { question: "Which area is most at risk of flooding?", options: ["Mountain tops", "Coastal cities", "Deserts", "Forests"], answer: "Coastal cities" },
-      { question: "What is a common result of urban flooding?", options: ["More trees", "Better roads", "Damaged infrastructure", "Fewer houses"], answer: "Damaged infrastructure" },
-      { question: "Which activity helps reduce flood risk?", options: ["Cutting trees", "Building on wetlands", "Planting vegetation", "Burning fossil fuels"], answer: "Planting vegetation" },
-      { question: "Which organization studies global climate change?", options: ["UNICEF", "NASA", "WWF", "WHO"], answer: "NASA" },
-      { question: "How does climate change affect rainfall?", options: ["No effect", "Decreases globally", "Makes it more extreme", "Only rains at night"], answer: "Makes it more extreme" },
-      { question: "Melting glaciers cause:", options: ["More farmland", "Lower sea levels", "Flooding", "Snowstorms"], answer: "Flooding" },
-      { question: "Flood defenses include:", options: ["Dams", "Cars", "Fossil fuels", "Airplanes"], answer: "Dams" },
-      { question: "Why are wetlands important?", options: ["They look nice", "They store carbon", "They dry out fast", "They attract tourists"], answer: "They store carbon" },
-      { question: "What is a floodplain?", options: ["A forest", "A high hill", "Low land near rivers", "An island"], answer: "Low land near rivers" },
-      { question: "More heat in the atmosphere causes:", options: ["Stable weather", "Fewer clouds", "More evaporation", "Less wind"], answer: "More evaporation" },
-      { question: "Which season is flooding most common in?", options: ["Winter", "Spring", "Summer", "Rainy season"], answer: "Rainy season" },
-      { question: "What is the best way to prepare for floods?", options: ["Ignore warnings", "Build a treehouse", "Create an emergency kit", "Cut power lines"], answer: "Create an emergency kit" },
-      { question: "Which country is highly vulnerable to sea level rise?", options: ["Switzerland", "Nepal", "Maldives", "Mongolia"], answer: "Maldives" },
-      { question: "What is flash flooding?", options: ["A slow flood", "A fast flood from heavy rain", "Ocean waves", "Melting snow"], answer: "A fast flood from heavy rain" },
-      { question: "What is the term for gases trapping heat?", options: ["Ozone layer", "Greenhouse effect", "Weathering", "Photosynthesis"], answer: "Greenhouse effect" },
-      { question: "Which type of energy reduces climate change?", options: ["Coal", "Wind", "Gasoline", "Diesel"], answer: "Wind" },
-      { question: "Floods can contaminate:", options: ["Roads", "Air", "Drinking water", "WiFi"], answer: "Drinking water" }
+      { question: "What is one main cause of floods?", options: ["Drought", "Heavy rainfall", "Forest fires", "Tornadoes"], answer: "Heavy rainfall" },
+      { question: "How does floods happen?", options: ["Ground water flooding", "Storm surges", "Rapid snow melt", "Heavy rainfall"], answer: "Heavy rainfall" },
+      { question: "Where do floods normally occur?", options: ["Wet coastal areas", "Frozen places", "Dry areas", "Underground caverns"], answer: "Wet coastal areas" },
+      { question: "What country got flooding the most?", options: ["America", "Bangladesh", "Kiribati", "Brazil"], answer: "Bangladesh" },
+      { question: "What type of flood occurs when water levels in rivers rise and overflow the bank?", options: ["Flash flood", "Coastal flood", "River floods", "Urban floods"], answer: "River floods" },
+      { question: "Which of the following does not contribute to floods?", options: ["Building drain", "Cutting down trees", "Building on wetlands", "Dumping waste in wetlands"], answer: "Building drain" },
+      { question: "What is the definition of floods?", options: ["A huge water level rise", "Dangerous", "Heavy rain making flood come to dry land", "Overflow of water onto normally dry land"], answer: "Overflow of water onto normally dry land" },
+      { question: "What impact do floods have on cities?", options: ["Cutting down forests to make for housing", "Avoiding the construction of draining systems", "Constructing buildings in low-lying areas", "Building flood barriers and levees"], answer: "Constructing buildings in low-lying areas" },
+      { question: "What natural phenomenon often leads to floods in coastal areas?", options: ["Earthquakes", "Storm surges", "Volcanic eruptions", "Heatwaves"], answer: "Storm surges" },
+      { question: "Which of the following is a primary effect of severe flooding?", options: ["Increase in land area", "Loss of biodiversity", "Contamination of water supplies", "Increased population growth"], answer: "Contamination of water supplies" },
+      { question: "What type of flood occurs due to storm surges?", options: ["Urban floods", "Coastal floods", "Flash floods", "River floods"], answer: "Coastal floods" },
+      { question: "Which historical flood is considered the deadliest in recorded history?", options: ["The Great Mississippi Flood of 1927", "The Yellow River Flood of 1887", "The Great Flood of 1931 in China", "The North Sea Flood of 1953"], answer: "The Great Flood of 1931 in China" },
+      { question: "Which type of flood often occurs in cities?", options: ["River floods", "Urban floods", "Flash floods", "Coastal floods"], answer: "Urban floods" },
+      { question: "Flooding can cause:", options: ["Displacement of populations", "Decrease in biodiversity", "Spread of diseases", "All of the above"], answer: "All of the above" },
+      { question: "Which natural disaster can result in floods?", options: ["Tornadoes", "Tsunamis", "Wildfires", "Avalanches"], answer: "Tsunamis" },
+      { question: "Which type of flood often strikes with little warning?", options: ["River flood", "Flash flood", "Urban flood", "Coastal flood"], answer: "Flash flood" },
+      { question: "Which country experienced the Great Flood of 1931?", options: ["India", "China", "Bangladesh", "Japan"], answer: "China" },
+      { question: "Which major flood event in New Zealand occurred during the Auckland Anniversary in January 2023?", options: ["Cyclone Gabrielle Flood", "Auckland Anniversary Floods", "Hawke’s Bay River Flood", "Petone Flash Flood"], answer: "Auckland Anniversary Floods" },
+      { question: "What was the primary cause of the Great Mississippi Flood of 1927?", options: ["Dam failure", "Tsunami", "Heavy rainfall and snowmelt", "Earthquake"], answer: "Heavy rainfall and snowmelt" }
     ];
 
     let currentQuestion = 0;
